@@ -57,8 +57,9 @@ else
 fi
 
 if [[ ! -x "${VENV_PYTHON}" ]]; then
-  log "Не найден исполняемый файл ${VENV_PYTHON}"
-  exit 1
+  log "Виртуальное окружение повреждено или неполное, пересоздаю ${VENV_DIR}"
+  rm -rf "${VENV_DIR}"
+  "${PYTHON_BIN}" -m venv "${VENV_DIR}"
 fi
 
 log "Использую интерпретатор виртуального окружения: ${VENV_PYTHON}"
