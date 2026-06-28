@@ -8,6 +8,7 @@ VENV_PYTHON="${VENV_DIR}/bin/python"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 OPTUNA_TRIALS="${OPTUNA_TRIALS:-5}"
 DATA_DIR="${ROOT_DIR}/GiveMeSomeCredit"
+FALLBACK_DATA_DIR="${REPO_ROOT}/GiveMeSomeCredit"
 export MPLCONFIGDIR="${ROOT_DIR}/.mplconfig"
 export PYTHONPATH="${REPO_ROOT}${PYTHONPATH:+:${PYTHONPATH}}"
 
@@ -47,7 +48,6 @@ error() {
 log "Старт пайплайна"
 log "Корневая директория: ${ROOT_DIR}"
 log "PYTHONPATH: ${PYTHONPATH}"
-log "Директория с данными: ${DATA_DIR}"
 
 if [[ ! -d "${VENV_DIR}" ]]; then
   log "Создаю виртуальное окружение в ${VENV_DIR}"
@@ -69,9 +69,19 @@ log "Устанавливаю зависимости из requirements.txt"
 "${VENV_PYTHON}" -m pip install -r "${ROOT_DIR}/requirements.txt" >/dev/null 2>&1
 log "Зависимости установлены"
 
+if [[ ! -f "${TRAIN_PATH}" || ! -f "${TEST_PATH}" ]]; then
+  if [[ "${DATA_DIR}" == "${ROOT_DIR}/GiveMeSomeCredit" && -f "${FALLBACK_DATA_DIR}/cs-training.csv" && -f "${FALLBACK_DATA_DIR}/cs-test.csv" ]]; then
+    DATA_DIR="${FALLBACK_DATA_DIR}"
+    TRAIN_PATH="${DATA_DIR}/cs-training.csv"
+    TEST_PATH="${DATA_DIR}/cs-test.csv"
+    log "Данные найдены в корне репозитория, использую ${DATA_DIR}"
+  fi
+fi
+
+log "Директория с данными: ${DATA_DIR}"
 log "Запускаю обучение и генерацию отчета"
 if [[ ! -f "${TRAIN_PATH}" || ! -f "${TEST_PATH}" ]]; then
-  error "Упс, кажется вы не скачали данные для обучения. Для работы пайплайна скачайте данные с https://www.kaggle.com/c/GiveMeSomeCredit/data и разместите их либо в ${ROOT_DIR}/GiveMeSomeCredit/ так, чтобы там лежали файлы cs-training.csv и cs-test.csv, либо передайте внешний путь через --data-dir /path/to/GiveMeSomeCredit"
+  error "Упс, кажется вы не скачали данные для обучения. Для работы пайплайна скачайте данные с https://www.kaggle.com/c/GiveMeSomeCredit/data и разместите их либо в ${ROOT_DIR}/GiveMeSomeCredit/, либо в ${REPO_ROOT}/GiveMeSomeCredit/, либо передайте внешний путь через --data-dir /path/to/GiveMeSomeCredit. В директории должны лежать файлы cs-training.csv и cs-test.csv"
   exit 1
 fi
 
