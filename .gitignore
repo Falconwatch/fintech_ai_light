@@ -17,9 +17,3 @@ artifacts/data/
 artifacts/models/
 model_pipeline/artifacts/data/
 model_pipeline/artifacts/models/
-
-*.csv
-*.xlsx
-*.xls
-~$*.docx
-~$*.pptx
