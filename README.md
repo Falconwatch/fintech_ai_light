@@ -1,60 +1,65 @@
 # Fintech AI Light
 
-Репозиторий содержит пайплайн обучения модели кредитного скоринга и материалы по заданию.
+Репозиторий содержит:
+
+- `model_pipeline/` — пайплайн обучения модели кредитного скоринга;
+- `task_done/` — финальные материалы по заданию.
 
 ## Быстрый старт
 
-Скачать репозиторий и запустить обучение модели:
+Из корня репозитория:
 
 ```bash
-git clone <repo_url>
-cd fintech_ai_light
 bash model_pipeline/run_pipeline.sh
 ```
 
-Если нужен более длинный прогон с большим числом `Optuna`-триалов:
+Полный прогон с увеличенным числом `Optuna`-триалов:
 
 ```bash
 bash model_pipeline/run_pipeline.sh --full
 ```
 
-Если данные лежат вне репозитория, можно передать путь к папке `GiveMeSomeCredit` явно:
+Если данные лежат вне стандартной директории, можно передать путь явно:
 
 ```bash
 bash model_pipeline/run_pipeline.sh --data-dir /path/to/GiveMeSomeCredit
 ```
 
-Что делает скрипт `model_pipeline/run_pipeline.sh`:
+Также поддерживается полный режим с внешней директорией данных:
 
-- использует виртуальное окружение в `model_pipeline/.venv`;
-- при необходимости обновляет `pip` и ставит зависимости из `model_pipeline/requirements.txt`;
-- запускает обучение модели на данных из `model_pipeline/GiveMeSomeCredit/` или из внешней папки, переданной через `--data-dir`;
-- сохраняет модель, метрики, графики и markdown-отчет в `model_pipeline/artifacts/`.
+```bash
+bash model_pipeline/run_pipeline.sh --full --data-dir /path/to/GiveMeSomeCredit
+```
 
-Подробности по ML-части и содержимому папки `model_pipeline/` вынесены в [model_pipeline/README.md](/Users/igor/Repositories/fintech_ai_light/model_pipeline/README.md).
-Описание материалов по заданию вынесено в `task_done/README.md`.
+## Где могут лежать данные
 
-## Структура Корня
+Пайплайн умеет искать данные в нескольких местах:
+
+- `model_pipeline/GiveMeSomeCredit/`
+- `GiveMeSomeCredit/` в корне репозитория
+- во внешней директории, переданной через `--data-dir`
+
+Ожидаются файлы:
+
+- `cs-training.csv`
+- `cs-test.csv`
+
+Если данных нет, скрипт выведет понятное сообщение с ссылкой на Kaggle:
+[Give Me Some Credit](https://www.kaggle.com/c/GiveMeSomeCredit/data)
+
+## Структура
 
 ```text
 .
-├── task_done/
 ├── model_pipeline/
+├── task_done/
 └── README.md
 ```
 
-- `task_done/` — все материалы по заданию: текстовые артефакты, презентации, план видео, архитектура и вспомогательные документы.
-  Подробное описание лежит в `task_done/README.md`.
-- `model_pipeline/` — код пайплайна, данные, шаблоны, тесты, скрипт запуска и артефакты обучения модели.
-  Подробное описание лежит в `model_pipeline/README.md`.
-- `README.md` — краткая инструкция по запуску и обзор корневой структуры.
+- `model_pipeline/` — код пайплайна, шаблоны, тесты, зависимости, скрипт запуска и локальные артефакты после выполнения.
+- `task_done/` — финальные материалы по заданию и исходный документ с требованиями.
 
-## Что Где Лежит
+## Где смотреть подробнее
 
-- Основной код: [model_pipeline/src](/Users/igor/Repositories/fintech_ai_light/model_pipeline/src)
-- README пайплайна: [model_pipeline/README.md](/Users/igor/Repositories/fintech_ai_light/model_pipeline/README.md)
-- README материалов: [task_done/README.md](/Users/igor/Repositories/fintech_ai_light/task_done/README.md)
-- Скрипт запуска: [model_pipeline/run_pipeline.sh](/Users/igor/Repositories/fintech_ai_light/model_pipeline/run_pipeline.sh)
-- Данные: [model_pipeline/GiveMeSomeCredit](/Users/igor/Repositories/fintech_ai_light/model_pipeline/GiveMeSomeCredit)
-- Результаты обучения: [model_pipeline/artifacts](/Users/igor/Repositories/fintech_ai_light/model_pipeline/artifacts)
-- Материалы по заданию: [task_done](/Users/igor/Repositories/fintech_ai_light/task_done)
+- Пайплайн: [model_pipeline/README.md](/Users/igor/Repositories/fintech_ai_light/model_pipeline/README.md)
+- Материалы задания: [task_done/README.md](/Users/igor/Repositories/fintech_ai_light/task_done/README.md)
