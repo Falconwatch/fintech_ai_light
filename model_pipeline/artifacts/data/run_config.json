@@ -1,0 +1,9 @@
+{
+  "train_path": "/Users/igor/Repositories/fintech_ai_light/model_pipeline/GiveMeSomeCredit/cs-training.csv",
+  "test_path": "/Users/igor/Repositories/fintech_ai_light/model_pipeline/GiveMeSomeCredit/cs-test.csv",
+  "output_dir": "/Users/igor/Repositories/fintech_ai_light/model_pipeline/artifacts",
+  "optuna_trials": 5,
+  "cv_folds": 5,
+  "dev_share": 0.8,
+  "feature_count": 25
+}

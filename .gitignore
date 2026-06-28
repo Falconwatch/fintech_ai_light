@@ -12,8 +12,3 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ipynb_checkpoints/
-
-artifacts/data/
-artifacts/models/
-model_pipeline/artifacts/data/
-model_pipeline/artifacts/models/
